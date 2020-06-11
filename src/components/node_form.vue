@@ -28,7 +28,7 @@
           </el-form-item>
         </el-form>
 
-        <el-form :model="line" ref="dataForm" label-width="80px" v-show="type === 'line'">
+        <el-form :model="line" ref="dataForm" label-width="20px" v-show="type === 'line'">
           <el-form-item label="条件">
             <el-input v-model="line.label"></el-input>
           </el-form-item>
@@ -118,7 +118,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
 .el-node-form-tag {
   position: absolute;
   top: 50%;
@@ -133,13 +133,17 @@ export default {
 }
 .nodeFormButton {
   position: relative;
+  float: left;
+  .el-form-item__content {
+    margin-left: 40px !important;
+  }
 }
-.nodeFormButton .reset {
+/* .nodeFormButton .reset {
   position: absolute;
   left: 20px;
 }
 .nodeFormButton .save {
   position: absolute;
   left: 90px;
-}
+} */
 </style>

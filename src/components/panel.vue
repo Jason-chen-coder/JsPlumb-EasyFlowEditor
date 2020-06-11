@@ -1,5 +1,5 @@
 <template>
-  <div v-if="easyFlowVisible" style="height: calc(100vh);">
+  <div v-if="flowVisible" style="height: calc(100vh);">
     <el-row>
       <!--顶部工具菜单-->
       <el-col :span="24">
@@ -115,7 +115,7 @@ export default {
       // jsPlumb 实例
       jsPlumb: null,
       // 控制画布销毁
-      easyFlowVisible: true,
+      flowVisible: true,
       // 控制流程数据显示与隐藏
       flowInfoVisible: false,
       // 是否加载完毕标志位
@@ -282,57 +282,24 @@ export default {
   },
   methods: {
     selectLineStyle () {
-      console.log(eval(this.lineValue))
       this.jsplumbSetting.Connector = eval(this.lineValue)
       this.dataReload(this.currentData)
+      console.log(this.data)
     },
     // // 开始放大缩小
     startScale () {
-      this.zoom(this.scaleValue)
-    }
-    ,
-    zoom (scale) {
-      this.$refs.efContainer.style.transform = `scale(${scale})`
-      this.jsPlumb.setZoom(0.75);
-    },
-    changeZoom () {
-      console.log(1)
-      // var _this = this;
-      var canvasDom = document.getElementById('efContainer');
-      // var mainDom = document.querySelector('.center-container');
-
-      var p = ["webkit", "moz", "ms", "o"];
-      window.addEventListener("mousewheel DOMMouseScroll", function (e) {
-        var delta = (e.wheelDelta && (e.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie &其它  
-          (e.detail && (e.detail > 0 ? -1 : 1));// firefox
-        var originX = (e.clientX - 353 - 20) / 50 * 100;
-        var originY = (e.clientY - 40 - 20) / 50 * 100;
-        var oString = originX + "% " + originY + "%";
-        if (delta > 0) {
-          // 向上滚  
-          for (var i = 0; i < p.length; i++) {
-            canvasDom.style[p[i] + "Transform"] = "scale(" + this.zoomNum + ")";
-            canvasDom.style[p[i] + "TransformOrigin"] = oString;
-          }
-
-          canvasDom.style["transform"] = "scale(" + this.zoomNum + ")";
-          canvasDom.style["transformOrigin"] = oString;
-          this.zoomNum += 0.1;
-        } else if (delta < 0) {
-          // 向下滚    
-          if (this.zoomNum > 0.1) {
-            this.zoomNum -= 0.1;
-            for (var j = 0; j < p.length; j++) {
-              canvasDom.style[p[j] + "Transform"] = "scale(" + this.zoomNum + ")";
-              canvasDom.style[p[j] + "TransformOrigin"] = oString;
-            }
-
-            canvasDom.style["transform"] = "scale(" + this.zoomNum + ")";
-            canvasDom.style["transformOrigin"] = oString;
-          }
-        }
-        return false;
-      });
+      // this.$refs.efContainer.css({
+      //   "-webkit-transform": `scale(${this.scaleValue})`,
+      //   "-moz-transform": `scale(${this.scaleValue})`,
+      //   "-ms-transform": `scale(${this.scaleValue})`,
+      //   "-o-transform": `scale(${this.scaleValue})`,
+      //   "transform": `scale(${this.scaleValue})`
+      // });
+      // jsPlumb.setZoom(`${this.scaleValue}`);
+      this.$refs.efContainer.style.transform = `scale(${this.scaleValue})`
+      this.jsPlumb.setZoom(`${this.scaleValue}`);
+      this.$refs.efContainer.style.width = `100%`
+      this.$refs.efContainer.style.height = `100%`
     },
     // 返回唯一标识
     getUUID () {
@@ -378,6 +345,7 @@ export default {
           if (this.loadEasyFlowFinish) {
             // 向数据列表中保存刚刚建立的连线数据
             this.data.lineList.push({ from: from, to: to })
+
           }
         })
 
@@ -572,7 +540,7 @@ export default {
         left: left + 'px',
         top: top + 'px',
         ico: nodeMenu.ico,
-        state: 'success'
+        state: nodeMenu.state
       }
       /**
        * 这里可以进行业务判断、是否能够添加该节点
@@ -581,10 +549,10 @@ export default {
       this.$nextTick(function () {
         this.jsPlumb.makeSource(nodeId, this.jsplumbSourceOptions)
         this.jsPlumb.makeTarget(nodeId, this.jsplumbTargetOptions)
-        this.jsPlumb.draggable(nodeId, {
-          containment: 'parent'
-        })
+        this.jsPlumb.draggable(nodeId)
+        console.log(this.data.nodeList)
       })
+
     },
     /**
      * 删除节点
@@ -650,12 +618,12 @@ export default {
     },
     // 加载流程图
     dataReload (data) {
-      this.easyFlowVisible = false
+      this.flowVisible = false
       this.data.nodeList = []
       this.data.lineList = []
       this.$nextTick(() => {
         data = lodash.cloneDeep(data)
-        this.easyFlowVisible = true
+        this.flowVisible = true
         this.data = data
         this.$nextTick(() => {
           this.jsPlumb = jsPlumb.getInstance()

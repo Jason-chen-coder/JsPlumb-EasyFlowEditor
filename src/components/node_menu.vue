@@ -20,7 +20,7 @@
       </ul>
     </div>-->
     <el-menu
-      default-active="2"
+      default-active="0"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -79,21 +79,40 @@ export default {
           name: '开始节点',
           ico: 'el-icon-video-play',
           open: true,
+          // 注意type值要唯一!!!!
           children: [
             {
               id: '11',
               type: 'timer',
               name: '数据接入',
               ico: 'el-icon-time',
+              state: "success",
               // 自定义覆盖样式
               style: {
                 'backgroundColor': 'red'
               }
             }, {
               id: '12',
-              type: 'task',
+              type: 'task1',
               name: '接口调用',
               ico: 'el-icon-odometer',
+              state: "success",
+              // 自定义覆盖样式
+              style: {}
+            }, {
+              id: '13',
+              type: 'task2',
+              name: '接口调试',
+              ico: 'el-icon-c-scale-to-original',
+              state: "success",
+              // 自定义覆盖样式
+              style: {}
+            }, {
+              id: '14',
+              type: 'timer2',
+              name: '接口配置',
+              ico: 'el-icon-files',
+              state: "success",
               // 自定义覆盖样式
               style: {}
             }
@@ -111,6 +130,7 @@ export default {
               type: 'end',
               name: '流程结束',
               ico: 'el-icon-caret-right',
+              state: "success",
               // 自定义覆盖样式
               style: {}
             }, {
@@ -118,6 +138,31 @@ export default {
               type: 'over',
               name: '数据清理',
               ico: 'el-icon-shopping-cart-full',
+              state: "success",
+              // 自定义覆盖样式
+              style: {}
+            }, {
+              id: '23',
+              type: 'over1',
+              name: '数据清理',
+              ico: 'el-icon-takeaway-box',
+              state: "success",
+              // 自定义覆盖样式
+              style: {}
+            }, {
+              id: '24',
+              type: 'over2',
+              name: '中间件',
+              ico: 'el-icon-mobile',
+              state: "success",
+              // 自定义覆盖样式
+              style: {}
+            }, {
+              id: '25',
+              type: 'over3',
+              name: '系统配置',
+              ico: 'el-icon-coordinate',
+              state: "success",
               // 自定义覆盖样式
               style: {}
             }
@@ -171,7 +216,8 @@ export default {
     },
     // 拖拽结束时触发
     end (evt, e) {
-      console.log(e)
+      console.log("evt", evt, e)
+      console.log(this.nodeMenu)
       this.$emit('addNode', evt, this.nodeMenu, mousePosition)
     },
     // 是否是火狐浏览器
