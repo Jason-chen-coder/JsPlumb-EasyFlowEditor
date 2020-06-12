@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="ef-node-form">
-      <div class="ef-node-form-header">节点详情</div>
+      <div class="ef-node-form-header">节点信息</div>
       <div class="ef-node-form-body">
         <el-form :model="node" ref="dataForm" label-width="80px" v-show="type === 'node'">
           <el-form-item label="类型">
@@ -23,17 +23,17 @@
             <el-input v-model="node.state"></el-input>
           </el-form-item>
           <el-form-item class="nodeFormButton">
-            <el-button icon="el-icon-close" class="reset">重置</el-button>
+            <el-button icon="el-icon-connection" class="nodeInfo" @click="showNodeInfo">节点详情</el-button>
             <el-button type="primary" icon="el-icon-check" class="save" @click="save">保存</el-button>
           </el-form-item>
         </el-form>
 
-        <el-form :model="line" ref="dataForm" label-width="20px" v-show="type === 'line'">
+        <el-form :model="line" ref="dataForm" label-width="80px" v-show="type === 'line'">
           <el-form-item label="条件">
             <el-input v-model="line.label"></el-input>
           </el-form-item>
           <el-form-item class="nodeFormButton">
-            <el-button icon="el-icon-close" class="reset">重置</el-button>
+            <!-- <el-button icon="el-icon-close" class="reset">重置</el-button> -->
             <el-button type="primary" icon="el-icon-check" class="save" @click="saveLine">保存</el-button>
           </el-form-item>
         </el-form>
@@ -108,6 +108,10 @@ export default {
         }
       })
     },
+    showNodeInfo () {
+      this.$parent.nodeDetailVisible = true
+      console.log("1111", this.$parent.nodeDetailVisible)
+    },
     showNodeForm () {
       this.$emit("changeNodeForm", this.isShowNodeForm)
       setTimeout(() => {
@@ -138,12 +142,12 @@ export default {
     margin-left: 40px !important;
   }
 }
-/* .nodeFormButton .reset {
+.nodeFormButton .nodeInfo {
   position: absolute;
-  left: 20px;
+  left: 40px;
 }
 .nodeFormButton .save {
   position: absolute;
-  left: 90px;
-} */
+  left: 150px;
+}
 </style>

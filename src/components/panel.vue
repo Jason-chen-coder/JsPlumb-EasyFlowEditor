@@ -92,6 +92,8 @@
     </div>
     <!-- 流程数据详情 -->
     <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
+    <!-- 节点详情 -->
+    <nodeDetail v-if="nodeDetailVisible" :currentNode="currentNode"></nodeDetail>
   </div>
 </template>
 
@@ -103,6 +105,7 @@ import { jsPlumb } from 'jsplumb'
 import flowNode from '@/components/node'
 import nodeMenu from '@/components/node_menu'
 import FlowInfo from '@/components/info'
+import nodeDetail from '@/components/node_detail'
 import FlowNodeForm from './node_form'
 import lodash from 'lodash'
 import { data_A } from '../data/data_A'
@@ -227,11 +230,14 @@ export default {
       // 当前的数据
       currentData: {},
       scaleValue: 1,
+      // 鼠标点击的当前节点
+      currentNode: {},
+      nodeDetailVisible: false
     }
   },
   components: {
     // draggable, 
-    flowNode, nodeMenu, FlowInfo, FlowNodeForm
+    flowNode, nodeMenu, FlowInfo, FlowNodeForm, nodeDetail
   },
   directives: {
     'flowDrag': {
@@ -281,6 +287,12 @@ export default {
     })
   },
   methods: {
+    //显示节点详情
+    showNodeDetail (node) {
+      this.nodeDetailVisible = true
+      this.currentNode = Object.create(node)
+    },
+    // 设置连接线的风格
     selectLineStyle () {
       this.jsplumbSetting.Connector = eval(this.lineValue)
       this.dataReload(this.currentData)
@@ -410,6 +422,10 @@ export default {
             console.log('停止拖拽', el)
           }
         })
+        // this.jsPlumb.bind("click", function (conn, originalEvent) {
+        //   console.log(conn, originalEvent)
+        //   // this.showNodeDetail(conn)
+        // });
       }
       // 初始化连线
       for (var j = 0; j < this.data.lineList.length; j++) {
@@ -681,12 +697,13 @@ export default {
 }
 /* 节点详情部分 */
 .node-detail {
-  width: 300px;
+  width: 350px;
   border: 1px solid #dce3e8;
   background-color: #fbfbfb;
   transition: all 0.5s linear !important;
   position: fixed;
   right: 0;
+  height: 100%;
   background-color: #fff;
   /* box-sizing: border-box; */
   padding: 0 0 30px;
