@@ -153,7 +153,7 @@
 .ef-node-right-ico {
   line-height: 32px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   color: #84cf65;
   cursor: default;
 }
@@ -162,7 +162,7 @@
 .el-node-state-success {
   line-height: 32px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   color: #84cf65;
   cursor: default;
 }
@@ -170,7 +170,7 @@
 .el-node-state-error {
   line-height: 32px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   color: #f56c6c;
   cursor: default;
 }
@@ -178,7 +178,7 @@
 .el-node-state-warning {
   line-height: 32px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   color: #e6a23c;
   cursor: default;
 }
@@ -186,19 +186,19 @@
 .el-node-state-running {
   line-height: 32px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   color: #84cf65;
   cursor: default;
 }
 
 /*node-form*/
 .ef-node-form-header {
-  height: 32px;
+  height: 42px;
   border-top: 1px solid #dce3e8;
   border-bottom: 1px solid #dce3e8;
   background: #f1f3f4;
   color: #000;
-  line-height: 32px;
+  line-height: 42px;
   padding-left: 12px;
   font-size: 14px;
 }
@@ -222,4 +222,31 @@
 /* label 为空的样式 */
 .emptyFlowLabel.jtk-overlay {
   display: none;
+}
+/* 新增 */
+.ef-dot {
+  background-color: #1879ff;
+  border-radius: 10px;
+}
+
+.ef-dot-hover {
+  background-color: red;
+}
+
+.ef-rectangle {
+  background-color: #1879ff;
+}
+
+.ef-rectangle-hover {
+  background-color: red;
+}
+
+.ef-img {
+}
+
+.ef-img-hover {
+}
+
+.ef-drop-hover {
+  border: 1px dashed #1879ff;
 }

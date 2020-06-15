@@ -20,12 +20,12 @@
       </ul>
     </div>-->
     <el-menu
-      default-active="0"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
+      :default-openeds="['1','2']"
     >
-      <el-submenu :index="index" v-for="(menu,index)  in  menuList" :key="menu.id">
+      <el-submenu :index="menu.id" v-for="menu  in  menuList" :key="menu.id">
         <template slot="title">
           <i class="el-icon-s-help"></i>
           <span>{{menu.name}}</span>
@@ -33,8 +33,8 @@
         <el-menu-item-group>
           <draggable @end="end" @start="move" v-model="menu.children" :options="draggableOptions">
             <el-menu-item
-              :index="(index)-(subIndex)"
-              v-for="(subMenu,subIndex) in menu.children"
+              :index="subMenu.level"
+              v-for="subMenu in menu.children"
               :key="subMenu.id"
               :type="subMenu.type"
             >
@@ -62,12 +62,15 @@ export default {
       // draggable配置参数参考 https://www.cnblogs.com/weixin186/p/10108679.html
       draggableOptions: {
         preventOnFilter: false,
+        //定义是否列表单元是否可以在列表容器内进行拖拽排序
         sort: false,
         disabled: false,
+        // 当拖动列表单元时会生成一个副本作为影子单元来模拟被拖动单元排序的情况，此配置项就是来给这个影子单元添加一个class，我们可以通过这种方式来给影子元素进行编辑样式
         ghostClass: 'tt',
+        chosenClass: 'choosen',//当选中列表单元时会给该单元增加一个class
         // 不使用H5原生的配置
         forceFallback: true,
-        // 拖拽的时候样式
+        // 拖放过程中鼠标附着单元的样式
         fallbackClass: 'flow-node-draggable'
       },
       // 默认打开的左侧菜单的id
@@ -76,13 +79,14 @@ export default {
         {
           id: '1',
           type: 'group',
-          name: '开始节点',
+          name: '接口节点',
           ico: 'el-icon-video-play',
           open: true,
           // 注意type值要唯一!!!!
           children: [
             {
               id: '11',
+              level: "1-1",
               type: 'timer',
               name: '数据接入',
               ico: 'el-icon-time',
@@ -93,6 +97,7 @@ export default {
               }
             }, {
               id: '12',
+              level: "1-2",
               type: 'task1',
               name: '接口调用',
               ico: 'el-icon-odometer',
@@ -101,6 +106,7 @@ export default {
               style: {}
             }, {
               id: '13',
+              level: "1-3",
               type: 'task2',
               name: '接口调试',
               ico: 'el-icon-c-scale-to-original',
@@ -109,6 +115,7 @@ export default {
               style: {}
             }, {
               id: '14',
+              level: "1-4",
               type: 'timer2',
               name: '接口配置',
               ico: 'el-icon-files',
@@ -121,12 +128,13 @@ export default {
         {
           id: '2',
           type: 'group',
-          name: '结束节点',
+          name: '工具节点',
           ico: 'el-icon-video-pause',
           open: true,
           children: [
             {
               id: '21',
+              level: "2-1",
               type: 'end',
               name: '流程结束',
               ico: 'el-icon-caret-right',
@@ -135,6 +143,7 @@ export default {
               style: {}
             }, {
               id: '22',
+              level: "2-2",
               type: 'over',
               name: '数据清理',
               ico: 'el-icon-shopping-cart-full',
@@ -143,7 +152,8 @@ export default {
               style: {}
             }, {
               id: '23',
-              type: 'over1',
+              level: "2-3",
+              type: 'clean',
               name: '数据清理',
               ico: 'el-icon-takeaway-box',
               state: "success",
@@ -151,7 +161,8 @@ export default {
               style: {}
             }, {
               id: '24',
-              type: 'over2',
+              level: "2-4",
+              type: 'middle',
               name: '中间件',
               ico: 'el-icon-mobile',
               state: "success",
@@ -159,7 +170,8 @@ export default {
               style: {}
             }, {
               id: '25',
-              type: 'over3',
+              level: "2-5",
+              type: 'system',
               name: '系统配置',
               ico: 'el-icon-coordinate',
               state: "success",
@@ -197,7 +209,7 @@ export default {
     handleClose (key, keyPath) {
       console.log(key, keyPath);
     },
-    // 根据类型获取左侧菜单对象
+    // 根据类型获取左侧菜单被拖动的节点
     getMenuByType (type) {
       for (let i = 0; i < this.menuList.length; i++) {
         let children = this.menuList[i].children;
@@ -209,15 +221,12 @@ export default {
       }
     },
     // 拖拽开始时触发
-    move (evt, a, b, c) {
-      console.log("move", a, b, c)
+    move (evt) {
       var type = evt.item.attributes.type.nodeValue
       this.nodeMenu = this.getMenuByType(type)
     },
     // 拖拽结束时触发
-    end (evt, e) {
-      console.log("evt", evt, e)
-      console.log(this.nodeMenu)
+    end (evt) {
       this.$emit('addNode', evt, this.nodeMenu, mousePosition)
     },
     // 是否是火狐浏览器
@@ -231,3 +240,10 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.choosen {
+  border: 1px solid #e0e3e7;
+  border-radius: 5px;
+  background-color: #fff;
+}
+</style>

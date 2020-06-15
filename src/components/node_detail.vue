@@ -4,7 +4,7 @@
     @closed="handleclose"
     center
     :visible.sync="nodeDialogVisible"
-    width="70%"
+    width="50%"
   >
     <div id="detailContainer" ref="detailContainer" class="nodeDetailInfo">
       <div id="detailbox">
@@ -80,8 +80,10 @@ export default {
 }
 #detailbox {
   position: absolute;
-  left: 50%;
+  left: 55%;
   top: 50%;
+  width: 80%;
+  height: 80%;
   transform: translate(-50%, -50%);
   margin: 0 auto;
   display: inline-block;

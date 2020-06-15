@@ -29,7 +29,11 @@ export var data_A = {
   ],
   lineList: [{
     from: 'nodeA',
-    to: 'nodeB'
+    to: 'nodeB',
+    label: "条件AB",
+    connector: 'Bezier',
+    anchors: ['Top', 'Bottom'],
+    // paintStyle: { strokeWidth: 2, stroke: "#1879FF" }
   }, {
     from: 'nodeB',
     to: 'nodeC'

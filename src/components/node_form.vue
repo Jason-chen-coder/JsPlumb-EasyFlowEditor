@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="ef-node-form">
-      <div class="ef-node-form-header">节点信息</div>
+      <div class="ef-node-form-header" v-if="type === 'line'">连线属性</div>
+      <div class="ef-node-form-header" v-if="type === 'node'">节点属性</div>
       <div class="ef-node-form-body">
-        <el-form :model="node" ref="dataForm" label-width="80px" v-show="type === 'node'">
+        <el-form :model="node" ref="dataForm" label-width="80px" v-if="type === 'node'">
           <el-form-item label="类型">
             <el-input v-model="node.type" :disabled="true"></el-input>
           </el-form-item>
@@ -13,7 +14,7 @@
           <el-form-item label="top坐标">
             <el-input disabled v-model="node.top"></el-input>
           </el-form-item>
-          <el-form-item label="名称">
+          <el-form-item label="节点名称">
             <el-input v-model="node.name"></el-input>
           </el-form-item>
           <el-form-item label="ico图标">
@@ -28,13 +29,23 @@
           </el-form-item>
         </el-form>
 
-        <el-form :model="line" ref="dataForm" label-width="80px" v-show="type === 'line'">
+        <el-form :model="line" ref="dataForm" label-width="80px" v-if="type === 'line'">
           <el-form-item label="条件">
             <el-input v-model="line.label"></el-input>
           </el-form-item>
+          <el-form-item label="连线样式">
+            <!-- 选择节点连接线样式 -->
+            <el-select @change="selectLineStyle" v-model="line.type">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item class="nodeFormButton">
-            <!-- <el-button icon="el-icon-close" class="reset">重置</el-button> -->
-            <el-button type="primary" icon="el-icon-check" class="save" @click="saveLine">保存</el-button>
+            <el-button type="primary" icon="el-icon-check" class="saveLine" @click="saveLine">保存</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -48,8 +59,6 @@
 
 <script>
 import { cloneDeep } from 'lodash'
-// import '../utils/jsplumb'
-// import { jsPlumb } from 'jsplumb'
 export default {
   data () {
     return {
@@ -60,10 +69,33 @@ export default {
       line: { label: "", from: "", to: "" },
       data: {},
       isShowNodeForm: true,
-      isEmpty: false
+      isEmpty: false,
+      // 连接线的样式值
+      lineValue: '',
+      // 连接线的样式选项
+      options: [{
+        value: '["StateMachine", { curviness: 50 }]',
+        label: 'StateMachine'
+      }, {
+        value: '["Flowchart", { curviness: 50 }]',
+        label: 'Flowchart'
+      }, {
+        value: '["Bezier", { stub: [0, 0], gap: 1, cornerRadius: 50, alwaysRespectStubs: true }]',
+        label: 'Bezier'
+      }, {
+        value: '["Straight", { curviness: 50 }]',
+        label: 'Straight'
+      }],
+
     }
   },
   methods: {
+    // 设置连接线的风格
+    selectLineStyle () {
+      // this.jsplumbSetting.Connector = eval(this.line.type)
+      // this.dataReload(this.currentData)
+      // console.log(this.data)
+    },
     /**
      * 表单修改，这里可以根据传入的ID进行业务信息获取
      * @param data
@@ -95,7 +127,7 @@ export default {
       } else {
         this.isEmpty = false
       }
-      this.$emit('setLineLabel', this.line.from, this.line.to, this.line.label)
+      this.$emit('setLineLabel', this.line.from, this.line.to, this.line.label, this.line.type)
     },
     save () {
       this.data.nodeList.filter((node) => {
@@ -105,12 +137,12 @@ export default {
           node.top = this.node.top
           node.icon = this.node.icon
           node.state = this.node.state
+          this.$emit('repaintEverything')
         }
       })
     },
     showNodeInfo () {
       this.$parent.nodeDetailVisible = true
-      console.log("1111", this.$parent.nodeDetailVisible)
     },
     showNodeForm () {
       this.$emit("changeNodeForm", this.isShowNodeForm)
@@ -135,6 +167,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .nodeFormButton {
   position: relative;
   float: left;
@@ -149,5 +182,10 @@ export default {
 .nodeFormButton .save {
   position: absolute;
   left: 150px;
+}
+.nodeFormButton .saveLine {
+  position: absolute;
+  left: 50%;
+  transform: translateX(100%);
 }
 </style>

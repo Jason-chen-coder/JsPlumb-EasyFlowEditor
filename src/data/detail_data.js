@@ -1,6 +1,6 @@
 
 export var node_data = {
-  name: 'A节点详情',
+  name: '某节点内部详情',
   nodeList: [
     {
       id: 'node_detailA',
