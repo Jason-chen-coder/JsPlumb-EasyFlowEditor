@@ -48,6 +48,18 @@
             </el-popover>
             <el-divider direction="vertical"></el-divider>
             <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
+              <p style="text-align:center">{{isShowGrid ? '隐藏网格线':'显示网格线'}}</p>
+              <el-button
+                type="text"
+                :icon="(isShowGrid?'icon-dituleiwanggequ-copy ':'icon-fangxingweixuanzhong-copy ')+'iconfont'"
+                style="vertical-align: middle;"
+                slot="reference"
+                size="large"
+                @click="isShowGrid=!isShowGrid"
+              ></el-button>
+            </el-popover>
+            <el-divider direction="vertical"></el-divider>
+            <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
               <p style="text-align:center">下载数据</p>
               <el-button
                 slot="reference"
@@ -64,7 +76,7 @@
             <!-- <el-button type="text" icon="el-icon-minus" size="large" @click="zoomSub"></el-button>-->
           </span>
           <div style="float: right;margin-right: 5px">
-            <el-button plain round icon="el-icon-document" @click="dataInfo" size="mini">流程信息</el-button>
+            <el-button plain round icon="el-icon-document" @click="dataInfo" size="mini">流程图数据</el-button>
             <el-button plain round @click="dataReloadA" icon="el-icon-refresh" size="mini">切换流程A</el-button>
             <el-button plain round @click="dataReloadB" icon="el-icon-refresh" size="mini">切换流程B</el-button>
             <el-button plain round @click="dataReloadC" icon="el-icon-refresh" size="mini">切换流程C</el-button>
@@ -94,7 +106,13 @@
         <i class="el-icon-minus shrink-btn"></i>
       </div>
       <!-- 中间画布部分 -->
-      <div class="center-container" id="center-container" ref="centerContainer" v-flowDrag>
+      <div
+        class="center-container"
+        :class="{'background-grid':isShowGrid}"
+        id="center-container"
+        ref="centerContainer"
+        v-flowDrag
+      >
         <div id="eeContainer" ref="eeContainer" class="container">
           <div class="all-nodes" ref="allnodes">
             <template v-for="node in data.nodeList">
@@ -136,11 +154,11 @@ import { jsPlumb } from 'jsplumb'
 //  1.使用html2canvas转换图片
 // import html2canvas from "html2canvas"
 // import canvg from 'canvg'
-import $ from 'jquery'
+// import $ from 'jquery'
 //  2.使用domtoimage 转换图片
 import domtoimage from 'dom-to-image';
 
-const url = require('@/assets/images/2.5D-2.png')
+const url = require('@/assets/images/2.5D-1.jpg')
 import flowNode from '@/components/node'
 import nodeMenu from '@/components/node_menu'
 import FlowInfo from '@/components/info'
@@ -301,8 +319,11 @@ export default {
       // 鼠标点击的当前节点
       currentNode: {},
       nodeDetailVisible: false,
+      // 图片预览
       imgUrl: ["../assets/images/2.5D-2.jpg"],
-      preLogo: url
+      preLogo: url,
+      // 网格线显示控制 
+      isShowGrid: true
     }
   },
   components: {
@@ -363,7 +384,7 @@ export default {
     })
   },
   methods: {
-    // // 将流程图保存为图片
+    //  将流程图保存为图片（使用html2canvas）
     // saveAsImage () {
     //   if (typeof html2canvas !== 'undefined') {
     //     // 移除被选中节点的样式
@@ -422,22 +443,16 @@ export default {
     //     }, 500)
     //   }
     // },
+    // // 将流程图保存为图片（使用dom2image）
     saveAsImage () {
-      $("#eeContainer").addClass("imagebackground")
-      var node = document.getElementById('eeContainer');
-      domtoimage.toPng(node)
+      var node = document.getElementById('center-container');
+      domtoimage.toSvg(node)
         .then((dataUrl) => {
           this.imgUrl[0] = dataUrl
-          console.log(dataUrl)
-          // var img = new Image();
-          // img.src = dataUrl;
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
         });
-      setTimeout(() => {
-        $("#eeContainer").removeClass("imagebackground")
-      }, 10)
     },
     //点击了某个节点
     showNodeDetail (node) {
@@ -863,7 +878,17 @@ export default {
         this.$message.success("正在下载中,请稍后...")
       }).catch(() => {
       })
-    }
+    },
+    // selectGrid () {
+    //   console.log(this.isShowGrid)
+    //   if (!this.isShowGrid) {
+    //     $('.center-container').removeClass("background-grid")
+    //     this.isShowGrid = false
+    //   } else {
+    //     $('.center-container').addClass("center-container")
+    //     this.isShowGrid = true
+    //   }
+    // }
   }
 }
 </script>
@@ -898,11 +923,6 @@ export default {
 .center-container {
   flex: 1;
   background-color: #fff;
-  background-image: linear-gradient(#eee 1px, transparent 0),
-    linear-gradient(90deg, #eee 1px, transparent 0),
-    linear-gradient(#f5f5f5 1px, transparent 0),
-    linear-gradient(90deg, #f5f5f5 1px, transparent 0);
-  background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
   overflow: hidden;
   /*画布容器*/
   .container {
@@ -919,18 +939,27 @@ export default {
     transform-origin: 20% 20%;
   }
 }
-#center-container::-webkit-scrollbar,
-#eeContainer::-webkit-scrollbar,
-#editor::-webkit-scrollbar {
-  overflow: hidden;
-  display: none;
-}
-.imagebackground {
-  background-color: #fff;
+// 背景网格
+.background-grid {
+  // background-color: #fff !important;
   background-image: linear-gradient(#eee 1px, transparent 0),
     linear-gradient(90deg, #eee 1px, transparent 0),
     linear-gradient(#f5f5f5 1px, transparent 0),
     linear-gradient(90deg, #f5f5f5 1px, transparent 0);
   background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
 }
+#center-container::-webkit-scrollbar,
+#eeContainer::-webkit-scrollbar,
+#editor::-webkit-scrollbar {
+  overflow: hidden;
+  display: none;
+}
+// .imagebackground {
+//   background-color: #fff;
+//   background-image: linear-gradient(#eee 1px, transparent 0),
+//     linear-gradient(90deg, #eee 1px, transparent 0),
+//     linear-gradient(#f5f5f5 1px, transparent 0),
+//     linear-gradient(90deg, #f5f5f5 1px, transparent 0);
+//   background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
+// }
 </style>
