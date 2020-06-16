@@ -11,19 +11,23 @@
 // import { codemirror } from 'vue-codemirror'
 // require("codemirror/mode/javascript/javascript.js")
 import JsonViewer from 'vue-json-viewer'
-
+import jsyaml from "js-yaml"
 export default {
   props: {
     data: Object,
+  },
+  mounted () {
+    console.log(this.data)
+    // console.log(this.jsonToYaml(this.data))
   },
   data () {
     return {
       dialogVisible: false,
       flowJsonData: {},
-      options: {
-        mode: { name: "javascript", json: true },
-        lineNumbers: true
-      }
+      // options: {
+      //   mode: { name: "javascript", json: true },
+      //   lineNumbers: true
+      // }
     }
   },
   components: {
@@ -34,6 +38,15 @@ export default {
     init () {
       this.dialogVisible = true
       // this.flowJsonData = JSON.stringify(this.data, null, 4).toString()
+    },
+    jsonToYaml (data) {
+      // json转换为yaml
+      return jsyaml.safeDump(data)
+    },
+    yamlToJson (data) {
+
+      // yaml转换为json
+      return jsyaml.safeLoad(data)
     }
   }
 }

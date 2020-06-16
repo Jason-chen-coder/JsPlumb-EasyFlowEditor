@@ -148,7 +148,7 @@ export default {
       this.$emit("changeNodeForm", this.isShowNodeForm)
       setTimeout(() => {
         this.isShowNodeForm = !this.isShowNodeForm
-      }, 500)
+      }, 300)
     }
   }
 }
@@ -157,12 +157,14 @@ export default {
 <style lang="less">
 .el-node-form-tag {
   position: absolute;
-  top: 50%;
-  margin-left: -15px;
-  height: 40px;
-  width: 15px;
+  top: 43%;
+  margin-left: -10px;
+  height: 50px;
+  font-size: 10px;
+  width: 10px;
   background-color: #409eff;
   display: flex;
+  border-radius: 10px 0 0 10px;
   color: #fff;
   justify-content: center;
   align-items: center;

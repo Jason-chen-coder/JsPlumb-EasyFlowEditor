@@ -69,11 +69,17 @@
                 @click="downloadData"
               ></el-button>
             </el-popover>
-            <!-- 固定位置的放大缩小工具(备用) -->
-            <!-- <el-divider direction="vertical"></el-divider>-->
-            <!-- <el-button type="text" icon="el-icon-plus" size="large" @click="zoomAdd"></el-button>-->
-            <!-- <el-divider direction="vertical"></el-divider>-->
-            <!-- <el-button type="text" icon="el-icon-minus" size="large" @click="zoomSub"></el-button>-->
+            <el-divider direction="vertical"></el-divider>
+            <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
+              <p style="text-align:center">上传数据</p>
+              <el-button
+                slot="reference"
+                type="text"
+                icon="el-icon-upload2"
+                size="large"
+                @click="uploadDataVisible=true"
+              ></el-button>
+            </el-popover>
           </span>
           <div style="float: right;margin-right: 5px">
             <el-button plain round icon="el-icon-document" @click="dataInfo" size="mini">流程图数据</el-button>
@@ -144,25 +150,23 @@
     <!-- 流程数据详情 -->
     <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
     <!-- 节点详情 -->
-    <nodeDetail v-if="nodeDetailVisible" :currentNode="currentNode"></nodeDetail>
+    <node-detail v-if="nodeDetailVisible" :currentNode="currentNode"></node-detail>
+    <!-- 上传数据 -->
+    <upload-data v-if="uploadDataVisible" @uploadPaintFlow="uploadPaintFlow"></upload-data>
   </div>
 </template>
 
 <script>
-// import draggable from 'vuedraggable'
 import { jsPlumb } from 'jsplumb'
-//  1.使用html2canvas转换图片
-// import html2canvas from "html2canvas"
-// import canvg from 'canvg'
-// import $ from 'jquery'
 //  2.使用domtoimage 转换图片
 import domtoimage from 'dom-to-image';
-
 const url = require('@/assets/images/2.5D-1.jpg')
 import flowNode from '@/components/node'
 import nodeMenu from '@/components/node_menu'
 import FlowInfo from '@/components/info'
 import nodeDetail from '@/components/node_detail'
+import uploadData from '@/components/uploadData'
+
 import FlowNodeForm from './node_form'
 import lodash from 'lodash'
 import { data_A } from '../data/data_A'
@@ -318,7 +322,10 @@ export default {
       scaleValue: 1,
       // 鼠标点击的当前节点
       currentNode: {},
+      // 节点详情显示
       nodeDetailVisible: false,
+      // 数据文件上传显示
+      uploadDataVisible: false,
       // 图片预览
       imgUrl: ["../assets/images/2.5D-2.jpg"],
       preLogo: url,
@@ -327,7 +334,7 @@ export default {
     }
   },
   components: {
-    // draggable, 
+    uploadData,
     flowNode, nodeMenu, FlowInfo, FlowNodeForm, nodeDetail
   },
   directives: {
@@ -384,66 +391,7 @@ export default {
     })
   },
   methods: {
-    //  将流程图保存为图片（使用html2canvas）
-    // saveAsImage () {
-    //   if (typeof html2canvas !== 'undefined') {
-    //     // 移除被选中节点的样式
-    //     $(".ef-node-active").removeClass("ef-node-active").addClass("selected-node")
-    //     var container2 = $("#center-container").clone(true)
-    //     let imgHeight = window.document.querySelector("#center-container").offsetHeight
-    //     let imgWidth = window.document.querySelector("#center-container").offsetWidth
-    //     container2.attr('id', 'centersecond-container').height(imgHeight).width(imgWidth);
-    //     $('body').append(container2).css("overflow", "hidden");
-    //     // 以下是对svg的处理
-    //     var nodesToRecover = [];
-    //     var nodesToRemove = [];
-    //     var svgElem = $("#centersecond-container").find('svg');//centerContainer为需要截取成图片的dom的id
-    //     console.log(svgElem)
-    //     svgElem.each(function (index, node) {
-    //       var parentNode = node.parentNode;
-    //       var svg = node.outerHTML.trim();
-    //       var canvas = document.createElement('canvas');
-    //       canvg(canvas, svg);
-    //       if (node.style.position) {
-    //         canvas.style.position += node.style.position;
-    //         canvas.style.left += node.style.left;
-    //         canvas.style.top += node.style.top;
-    //       }
-    //       nodesToRecover.push({
-    //         parent: parentNode,
-    //         child: node
-    //       });
-    //       parentNode.removeChild(node);
-    //       nodesToRemove.push({
-    //         parent: parentNode,
-    //         child: canvas
-    //       });
-    //       parentNode.appendChild(canvas);
-    //     });
-    //     console.log($("#center-container"))
-    //     //由于canvg已将所有svg元素转换成canvas,所以生成图片之后要将画布的内容重新渲染,
-    //     html2canvas(document.getElementById('centersecond-container'), {
-    //       allowTaint: true,
-    //       useCORS: true,
-    //       logging: false,
-    //       height: imgHeight,
-    //       width: imgWidth
-    //     }
-    //     ).then(canvas => {
-    //       // 转成图片，生成图片地址
-    //       console.log("图片地址", canvas.toDataURL("image/jpg"))
-    //       this.imgUrl = [canvas.toDataURL("image/png")]
-    //     });
-    //     // 选中节点的样式
-    //     $(".selected-node").addClass("ef-node-active")
-    //     console.log(this.currentData)
-    //     setTimeout(() => {
-
-    //       container2.remove()
-    //     }, 500)
-    //   }
-    // },
-    // // 将流程图保存为图片（使用dom2image）
+    // 将流程图保存为图片（使用dom2image）
     saveAsImage () {
       var node = document.getElementById('center-container');
       domtoimage.toSvg(node)
@@ -838,6 +786,7 @@ export default {
     // 模拟载入数据dataC
     dataReloadC () {
       this.currentData = data_C
+      console.log(data_C)
       this.dataReload(data_C)
     },
     // 模拟载入数据dataD
@@ -845,21 +794,11 @@ export default {
       this.currentData = data_D
       this.dataReload(data_D)
     },
-    zoomAdd () {
-      if (this.zoom >= 1) {
-        return
-      }
-      this.zoom = this.zoom + 0.1
-      this.$refs.efContainer.style.transform = `scale(${this.zoom})`
-      this.jsPlumb.setZoom(this.zoom)
-    },
-    zoomSub () {
-      if (this.zoom <= 0) {
-        return
-      }
-      this.zoom = this.zoom - 0.1
-      this.$refs.efContainer.style.transform = `scale(${this.zoom})`
-      this.jsPlumb.setZoom(this.zoom)
+    // 文件上传子组件触发的重绘事件
+    uploadPaintFlow (data) {
+      console.log(JSON.parse(data))
+      this.currentData = JSON.parse(data)
+      this.dataReload(this.currentData)
     },
     // 下载数据
     downloadData () {
@@ -879,16 +818,6 @@ export default {
       }).catch(() => {
       })
     },
-    // selectGrid () {
-    //   console.log(this.isShowGrid)
-    //   if (!this.isShowGrid) {
-    //     $('.center-container').removeClass("background-grid")
-    //     this.isShowGrid = false
-    //   } else {
-    //     $('.center-container').addClass("center-container")
-    //     this.isShowGrid = true
-    //   }
-    // }
   }
 }
 </script>
@@ -909,7 +838,7 @@ export default {
   height: 100%;
   border: 1px solid #dce3e8;
   background-color: #fbfbfb;
-  transition: all 0.5s linear !important;
+  transition: all 0.3s linear !important;
   position: fixed;
   right: 0;
   background-color: #fff;
@@ -942,10 +871,10 @@ export default {
 // 背景网格
 .background-grid {
   // background-color: #fff !important;
-  background-image: linear-gradient(#eee 1px, transparent 0),
-    linear-gradient(90deg, #eee 1px, transparent 0),
-    linear-gradient(#f5f5f5 1px, transparent 0),
-    linear-gradient(90deg, #f5f5f5 1px, transparent 0);
+  background-image: linear-gradient(#ddd 1px, transparent 0),
+    linear-gradient(90deg, #ddd 1px, transparent 0),
+    linear-gradient(#f6f6f6 1px, transparent 0),
+    linear-gradient(90deg, #f6f6f6 1px, transparent 0);
   background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
 }
 #center-container::-webkit-scrollbar,
