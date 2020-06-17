@@ -390,6 +390,18 @@ export default {
       this.currentData = data_A
       this.dataReload(this.currentData)
     })
+
+    this.$notify({
+      title: 'Easy Editor',
+      dangerouslyUseHTMLString: true,
+      message: "<p> 当前版本：1.0.0<br /> Powered by Jason chen<br /> GitHhub:<a target='blank' href=''>Easy Editor</a> </p>",
+      showClose: true,
+      iconClass: "icon-workflow-copy iconfont",
+      position: 'bottom-right',
+      offset: 100,
+      customClass: "notify-tip"
+    });
+
   },
   methods: {
     saveAsImage () {
@@ -902,7 +914,9 @@ export default {
     text-align: center;
   }
 }
-
+.notify-tip {
+  margin-right: 300px;
+}
 // .imagebackground {
 //   background-color: #fff;
 //   background-image: linear-gradient(#eee 1px, transparent 0),
