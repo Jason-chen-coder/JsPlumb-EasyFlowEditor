@@ -3,21 +3,22 @@
   margin: 0;
 }
 /*顶部工具栏*/
-.ef-tooltar {
+.ee-tooltar {
   padding-left: 60px;
   box-sizing: border-box;
   height: 45px;
   line-height: 40px;
   z-index: 3;
+  background-color: #fff;
   border-bottom: 1px solid #dadce0;
 }
 /* 缩放工具 */
 .zoom-tool {
   opacity: 0.3;
   position: fixed;
-  left: 300px;
-  top: 100px;
-  transition: all 0.5s linear;
+  left: 270px;
+  /* top: 74px; */
+  bottom: 60px;
   z-index: 1;
 }
 .zoom-tool:hover {
@@ -45,7 +46,7 @@
 }
 
 /*节点菜单*/
-.ef-node-pmenu {
+.ee-node-pmenu {
   cursor: pointer;
   height: 32px;
   line-height: 32px;
@@ -56,11 +57,11 @@
   padding-left: 5px;
 }
 
-.ef-node-pmenu:hover {
+.ee-node-pmenu:hover {
   background-color: #e0e0e0;
 }
 
-.ef-node-menu-li {
+.ee-node-menu-li {
   color: #565758;
   width: 150px;
   border: 1px dashed #e0e3e7;
@@ -70,7 +71,7 @@
   padding-left: 8px;
 }
 
-.ef-node-menu-li:hover {
+.ee-node-menu-li:hover {
   /* 设置移动样式*/
   cursor: move;
   background-color: #f0f7ff;
@@ -79,13 +80,13 @@
   padding-left: 5px;
 }
 
-.ef-node-menu-ul {
+.ee-node-menu-ul {
   list-style: none;
   padding-left: 20px;
 }
 
 /*节点的最外层容器的样式*/
-.ef-node-container {
+.ee-node-container {
   position: absolute;
   display: flex;
   width: 170px;
@@ -95,7 +96,7 @@
   background-color: #fff;
 }
 
-.ef-node-container:hover {
+.ee-node-container:hover {
   /* 设置移动样式*/
   cursor: move;
   background-color: #f0f7ff;
@@ -105,7 +106,7 @@
 }
 
 /*节点激活样式(被点击的节点)*/
-.ef-node-active {
+.ee-node-active {
   background-color: #f0f7ff;
   box-shadow: #6f93b6 0px 0px 12px 0px;
   background-color: #f0f7ff;
@@ -113,30 +114,30 @@
 }
 
 /*节点左侧的竖线*/
-.ef-node-left {
+.ee-node-left {
   width: 4px;
   background-color: #1879ff;
   border-radius: 4px 0 0 4px;
 }
 
 /*节点左侧的图标*/
-.ef-node-left-ico {
+.ee-node-left-ico {
   line-height: 32px;
   margin-left: 8px;
   color: #409eff;
 }
-.ef-node-left-ico i,
-.ef-node-left-ico .iconfont {
+.ee-node-left-ico i,
+.ee-node-left-ico .iconfont {
   font-size: 23px;
 }
 
-.ef-node-left-ico:hover {
+.ee-node-left-ico:hover {
   /* 设置拖拽的样式 */
   cursor: crosshair;
 }
 
 /*节点显示的文字*/
-.ef-node-text {
+.ee-node-text {
   color: #565758;
   font-size: 12px;
   line-height: 32px;
@@ -150,7 +151,7 @@
 }
 
 /*节点右侧的图标*/
-.ef-node-right-ico {
+.ee-node-right-ico {
   line-height: 32px;
   position: absolute;
   right: 5px;
@@ -192,7 +193,7 @@
 }
 
 /*node-form*/
-.ef-node-form-header {
+.ee-node-form-header {
   height: 42px;
   border-top: 1px solid #dce3e8;
   border-bottom: 1px solid #dce3e8;
@@ -203,7 +204,7 @@
   font-size: 14px;
 }
 
-.ef-node-form-body {
+.ee-node-form-body {
   margin-top: 10px;
   padding-right: 10px;
   padding-bottom: 20px;
@@ -224,29 +225,29 @@
   display: none;
 }
 /* 新增 */
-.ef-dot {
+.ee-dot {
   background-color: #1879ff;
   border-radius: 10px;
 }
 
-.ef-dot-hover {
+.ee-dot-hover {
   background-color: red;
 }
 
-.ef-rectangle {
+.ee-rectangle {
   background-color: #1879ff;
 }
 
-.ef-rectangle-hover {
+.ee-rectangle-hover {
   background-color: red;
 }
 
-.ef-img {
+.ee-img {
 }
 
-.ef-img-hover {
+.ee-img-hover {
 }
 
-.ef-drop-hover {
+.ee-drop-hover {
   border: 1px dashed #1879ff;
 }

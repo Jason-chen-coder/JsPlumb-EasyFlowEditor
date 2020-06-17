@@ -3,7 +3,7 @@
     <el-row>
       <!--顶部工具菜单-->
       <el-col :span="24">
-        <div class="ef-tooltar">
+        <div class="ee-tooltar">
           <el-link type="primary" :underline="false">Easy Editor</el-link>
           <span class="tooltar-center">
             <el-link type="primary" :underline="false">{{data.name}}</el-link>
@@ -12,20 +12,9 @@
               placement="bottom"
               @after-enter="saveAsImage"
               style="text-align:center"
-              trigger="click"
               width="150"
             >
-              <div style="text-align:center">
-                生成图片
-                <div class="demo-image__preview" style="margin:0 auto">
-                  <el-image
-                    style="width: 100px; height: 100px"
-                    :src="preLogo"
-                    fit="cover"
-                    :preview-src-list="imgUrl"
-                  ></el-image>
-                </div>
-              </div>
+              <div style="text-align:center">生成图片</div>
               <el-button
                 type="text"
                 icon="el-icon-picture-outline"
@@ -86,7 +75,7 @@
             <el-button plain round @click="dataReloadA" icon="el-icon-refresh" size="mini">切换流程A</el-button>
             <el-button plain round @click="dataReloadB" icon="el-icon-refresh" size="mini">切换流程B</el-button>
             <el-button plain round @click="dataReloadC" icon="el-icon-refresh" size="mini">切换流程C</el-button>
-            <el-button plain round @click="dataReloadD" icon="el-icon-refresh" size="mini">自定义样式</el-button>
+            <el-button plain round @click="dataReloadD" icon="el-icon-refresh" size="mini">切换流程D</el-button>
           </div>
         </div>
       </el-col>
@@ -103,8 +92,9 @@
         <el-slider
           @dblclick="scaleValue=1"
           @input="startScale"
-          :step="0.005"
-          :max="1.5"
+          :step="0.001"
+          :max="1.3"
+          :min="0.7"
           v-model="scaleValue"
           vertical
           height="90px"
@@ -119,6 +109,7 @@
         ref="centerContainer"
         v-flowDrag
       >
+        <!-- jsplumb的容器 -->
         <div id="eeContainer" ref="eeContainer" class="container">
           <div class="all-nodes" ref="allnodes">
             <template v-for="node in data.nodeList">
@@ -153,6 +144,8 @@
     <node-detail v-if="nodeDetailVisible" :currentNode="currentNode"></node-detail>
     <!-- 上传数据 -->
     <upload-data v-if="uploadDataVisible" @uploadPaintFlow="uploadPaintFlow"></upload-data>
+    <!-- 一键生成图片 -->
+    <image-load v-if="imageLoadVisible" :imgUrl="imgUrl" :isShowGrid="isShowGrid"></image-load>
   </div>
 </template>
 
@@ -166,7 +159,8 @@ import nodeMenu from '@/components/node_menu'
 import FlowInfo from '@/components/info'
 import nodeDetail from '@/components/node_detail'
 import uploadData from '@/components/uploadData'
-
+import imageLoad from '@/components/imageLoad'
+import $ from "jquery"
 import FlowNodeForm from './node_form'
 import lodash from 'lodash'
 import { data_A } from '../data/data_A'
@@ -212,12 +206,12 @@ export default {
         // 删除线的时候节点不删除
         DeleteEndpointsOnDetach: false,
         // 连线的两端端点类型：矩形 eight: 矩形的高 ，idth: 矩形的宽
-        // Endpoint: ['Rectangle', {height: 20, width: 20, cssClass: 'ef-rectangle', hoverClass: 'ef-rectangle-hover'}],
+        // Endpoint: ['Rectangle', {height: 20, width: 20, cssClass: 'ee-rectangle', hoverClass: 'ee-rectangle-hover'}],
         //  图像端点
-        // Endpoint: ['Image', {src: 'https://www.easyicon.net/api/resizeApi.php?id=1181776&size=32', cssClass: 'ef-img', hoverClass: 'ef-img-hover'}],
+        // Endpoint: ['Image', {src: 'https://www.easyicon.net/api/resizeApi.php?id=1181776&size=32', cssClass: 'ee-img', hoverClass: 'ee-img-hover'}],
         //  空白端点
         Endpoint: ['Blank', { Overlays: '' }],
-        // Endpoints: [['Dot', {radius: 5, cssClass: 'ef-dot', hoverClass: 'ef-dot-hover'}], ['Rectangle', {height: 20, width: 20, cssClass: 'ef-rectangle', hoverClass: 'ef-rectangle-hover'}]],
+        // Endpoints: [['Dot', {radius: 5, cssClass: 'ee-dot', hoverClass: 'ee-dot-hover'}], ['Rectangle', {height: 20, width: 20, cssClass: 'ee-rectangle', hoverClass: 'ee-rectangle-hover'}]],
         // 线端点的样式
         EndpointStyle: { fill: '#1879ffa1', outlineWidth: 1 },
         // 是否打开jsPlumb的内部日志记录
@@ -314,7 +308,7 @@ export default {
         filterExclude: false,
         anchor: 'Continuous',
         allowLoopback: false,
-        dropOptions: { hoverClass: 'ef-drop-hover' }
+        dropOptions: { hoverClass: 'ee-drop-hover' }
       },
       isNodeFormActive: false,
       // 当前的数据
@@ -326,8 +320,9 @@ export default {
       nodeDetailVisible: false,
       // 数据文件上传显示
       uploadDataVisible: false,
+      imageLoadVisible: false,
       // 图片预览
-      imgUrl: ["../assets/images/2.5D-2.jpg"],
+      imgUrl: "../assets/images/2.5D-2.jpg",
       preLogo: url,
       // 网格线显示控制 
       isShowGrid: true
@@ -335,7 +330,12 @@ export default {
   },
   components: {
     uploadData,
-    flowNode, nodeMenu, FlowInfo, FlowNodeForm, nodeDetail
+    imageLoad,
+    flowNode,
+    nodeMenu,
+    FlowInfo,
+    FlowNodeForm,
+    nodeDetail
   },
   directives: {
     // 鼠标在画布中进行拖拽时，动态修改流程图在画布的位置
@@ -354,15 +354,16 @@ export default {
           //  鼠标按下，计算鼠标在当前可视区的坐标
           let disX = e.clientX
           let disY = e.clientY
-          console.log(disX, disY)
+          // 移除被选中节点的样式
+          $(".ee-node-active").removeClass("ee-node-active")
+          console.log("click")
           el.style.cursor = 'move'
-
           document.onmousemove = function (e) {
             // 移动时禁止默认事件
             e.preventDefault()
+            // e.clientX/e.clientY为在鼠标移动中的最新坐标
             // left为触发一次移动事件横向移动的距离
             const left = e.clientX - disX
-
             el.scrollLeft += -left
             // top为触发一次移动事件竖直移动的距离
             const top = e.clientY - disY
@@ -386,33 +387,45 @@ export default {
     this.jsPlumb = jsPlumb.getInstance()
     this.$nextTick(() => {
       // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
-      this.currentData = data_B
+      this.currentData = data_A
       this.dataReload(this.currentData)
     })
   },
   methods: {
-    // 将流程图保存为图片（使用dom2image）
     saveAsImage () {
-      var node = document.getElementById('center-container');
+      // 将流程图保存为图片并将图片地址传递给子组件（使用dom2image）
+      // var node = document.getElementById('center-container');
+      var node = document.getElementById('eeContainer');
       domtoimage.toSvg(node)
         .then((dataUrl) => {
-          this.imgUrl[0] = dataUrl
+          this.imgUrl = dataUrl
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
         });
+      setTimeout(() => {
+        this.imageLoadVisible = true;
+      }, 100)
     },
     //点击了某个节点
     showNodeDetail (node) {
       this.nodeDetailVisible = true
       this.currentNode = Object.create(node)
     },
-    // // 开始放大缩小
+    //开始放大缩小
     startScale () {
       this.$refs.eeContainer.style.transform = `scale(${this.scaleValue})`
       this.jsPlumb.setZoom(`${this.scaleValue}`);
-      // this.$refs.eeContainer.style.width = `100%`
-      // this.$refs.eeContainer.style.height = `100%`
+      // 获取center-container的宽高作为原始宽高,然后以放大/缩小倍数计算后给eecontainer
+      var containWidth = $("#center-container").width()
+      var containHeight = $("#center-container").height()
+      if (this.scaleValue < 1) {
+        $("#eeContainer").width(containWidth / this.scaleValue)
+        $("#eeContainer").height(containHeight / this.scaleValue)
+      } else {
+        $("#eeContainer").width(containWidth * this.scaleValue)
+        $("#eeContainer").height(containHeight * this.scaleValue)
+      }
     },
     // 返回唯一标识
     getUUID () {
@@ -520,7 +533,8 @@ export default {
         // 设置目标点，其他源点拖出的线可以连接该节点
         this.jsPlumb.makeTarget(node.id, this.jsplumbTargetOptions)
         this.jsPlumb.draggable(node.id, {
-          stop: function (el) {
+          containment: 'parent',
+          stop: (el) => {
             _this.currentData = _this.data
             console.log('停止拖拽', el)
           }
@@ -796,9 +810,13 @@ export default {
     },
     // 文件上传子组件触发的重绘事件
     uploadPaintFlow (data) {
-      console.log(JSON.parse(data))
-      this.currentData = JSON.parse(data)
-      this.dataReload(this.currentData)
+      try {
+        console.log(JSON.parse(data))
+        this.currentData = JSON.parse(data)
+        this.dataReload(this.currentData)
+      } catch (error) {
+        console.log("出错啦", error)
+      }
     },
     // 下载数据
     downloadData () {
@@ -832,22 +850,7 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-/* 节点详情部分 */
-.node-detail {
-  width: 300px;
-  height: 100%;
-  border: 1px solid #dce3e8;
-  background-color: #fbfbfb;
-  transition: all 0.3s linear !important;
-  position: fixed;
-  right: 0;
-  background-color: #fff;
-  /* box-sizing: border-box; */
-  padding: 0 0 30px;
-  .ef-node-form-header {
-    text-align: center;
-  }
-}
+
 /* 中间画布的容器*/
 .center-container {
   flex: 1;
@@ -863,9 +866,9 @@ export default {
   }
   #eeContainer {
     position: relative;
-    // overflow: hidden;
+    overflow: hidden;
     flex: 1;
-    transform-origin: 20% 20%;
+    transform-origin: 0% 0%;
   }
 }
 // 背景网格
@@ -880,9 +883,26 @@ export default {
 #center-container::-webkit-scrollbar,
 #eeContainer::-webkit-scrollbar,
 #editor::-webkit-scrollbar {
-  overflow: hidden;
   display: none;
 }
+
+/* 节点详情部分 */
+.node-detail {
+  width: 300px;
+  height: 100%;
+  border: 1px solid #dce3e8;
+  background-color: #fbfbfb;
+  transition: all 0.3s linear !important;
+  position: fixed;
+  // position: absolute;
+  right: 0;
+  background-color: #fff;
+  /* box-sizing: border-box; */
+  .ee-node-form-header {
+    text-align: center;
+  }
+}
+
 // .imagebackground {
 //   background-color: #fff;
 //   background-image: linear-gradient(#eee 1px, transparent 0),

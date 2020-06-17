@@ -24,7 +24,7 @@ export var node_data = {
       type: 'task',
       left: '170px',
       top: '10px',
-      ico: 'icon-litijiankong iconfont'
+      ico: 'icon-lifangtilitiduomiantifangkuai iconfont'
     },
     {
       id: 'node_detailC',
@@ -32,35 +32,35 @@ export var node_data = {
       type: 'task',
       left: '270px',
       top: '10px',
-      ico: 'icon-litijiankong iconfont'
+      ico: 'icon-lifangtilitiduomiantifangkuai iconfont'
     }, {
       id: 'node_detailC',
       name: '实例C',
       type: 'task',
       left: '380px',
       top: '10px',
-      ico: 'icon-litijiankong iconfont'
+      ico: 'icon-lifangtilitiduomiantifangkuai iconfont'
     }, {
       id: 'node_detailC',
       name: '实例C',
       type: 'task',
       left: '450px',
       top: '10px',
-      ico: 'icon-litijiankong iconfont'
+      ico: 'icon-lifangtilitiduomiantifangkuai iconfont'
     }, {
       id: 'node_detailC',
       name: '实例C',
       type: 'task',
       left: '580px',
       top: '10px',
-      ico: 'icon-litijiankong iconfont'
+      ico: 'icon-lifangtilitiduomiantifangkuai iconfont'
     }, {
       id: 'node_detailC',
       name: '实例C',
       type: 'task',
       left: '640px',
       top: '10px',
-      ico: 'icon-litijiankong iconfont'
+      ico: 'icon-lifangtilitiduomiantifangkuai iconfont'
     }
   ]
 }

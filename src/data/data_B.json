@@ -1,5 +1,5 @@
-export var data_B = {
-  "name": "流程B",
+{
+  " name": "流程B",
   "nodeList": [
     {
       "id": "nodeA",
@@ -27,7 +27,8 @@ export var data_B = {
       "top": "351px",
       "ico": "el-icon-present",
       "state": "warning"
-    }, {
+    },
+    {
       "id": "nodeD",
       "name": "流程B-节点D",
       "type": "task",
@@ -37,22 +38,24 @@ export var data_B = {
       "state": "running"
     }
   ],
-  "lineList": [{
-    "from": "nodeA",
-    "to": "nodeB",
-    "label": "条件A"
-  }, {
-    "from": "nodeA",
-    "to": "nodeC",
-    "label": "条件B"
-  }, {
-    "from": "nodeB",
-    "to": "nodeD"
-  }, {
-    "from": "nodeC",
-    "to": "nodeD"
-  }
+  "lineList": [
+    {
+      "from": "nodeA",
+      "to": "nodeB",
+      "label": "条件A"
+    },
+    {
+      "from": "nodeA",
+      "to": "nodeC",
+      "label": "条件B"
+    },
+    {
+      "from": "nodeB",
+      "to": "nodeD"
+    },
+    {
+      "from": "nodeC",
+      "to": "nodeD"
+    }
   ]
 }
-
-

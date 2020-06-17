@@ -7,15 +7,15 @@
     :class="nodeContainerClass"
   >
     <!-- 最左侧的那条竖线 -->
-    <div class="ef-node-left"></div>
+    <div class="ee-node-left"></div>
     <!-- 节点类型的图标 -->
-    <div class="ef-node-left-ico flow-node-drag">
+    <div class="ee-node-left-ico flow-node-drag">
       <i :class="nodeIcoClass"></i>
     </div>
     <!-- 节点名称 -->
-    <div class="ef-node-text" :show-overflow-tooltip="true">{{node.name}}</div>
+    <div class="ee-node-text" :show-overflow-tooltip="true">{{node.name}}</div>
     <!-- 节点状态图标 -->
-    <div class="ef-node-right-ico">
+    <div class="ee-node-right-ico">
       <i class="el-icon-circle-check el-node-state-success" v-show="node.state === 'success'"></i>
       <i class="el-icon-circle-close el-node-state-error" v-show="node.state === 'error'"></i>
       <i class="el-icon-warning-outline el-node-state-warning" v-show="node.state === 'warning'"></i>
@@ -37,9 +37,9 @@ export default {
     nodeContainerClass () {
       return {
         // 设置节点容器的样式
-        'ef-node-container': true,
+        'ee-node-container': true,
         // 被点击的节点样式
-        'ef-node-active': this.activeElement.type == 'node' ? this.activeElement.nodeId === this.node.id : false
+        'ee-node-active': this.activeElement.type == 'node' ? this.activeElement.nodeId === this.node.id : false
       }
     },
     // 节点容器样式(节点的位置)

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="ef-node-form">
-      <div class="ef-node-form-header" v-if="type === 'line'">连线属性</div>
-      <div class="ef-node-form-header" v-if="type === 'node'">节点属性</div>
-      <div class="ef-node-form-body">
+    <div class="ee-node-form">
+      <div class="ee-node-form-header" v-if="type === 'line'">连线属性</div>
+      <div class="ee-node-form-header" v-if="type === 'node'">节点属性</div>
+      <div class="ee-node-form-body">
         <el-form :model="node" ref="dataForm" label-width="80px" v-if="type === 'node'">
           <el-form-item label="类型">
             <el-input v-model="node.type" :disabled="true"></el-input>
@@ -142,7 +142,12 @@ export default {
       })
     },
     showNodeInfo () {
-      this.$parent.nodeDetailVisible = true
+      if (this.node.id) {
+        this.$parent.nodeDetailVisible = true
+      } else {
+        this.$message.error("请先选择节点")
+      }
+
     },
     showNodeForm () {
       this.$emit("changeNodeForm", this.isShowNodeForm)

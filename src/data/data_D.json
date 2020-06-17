@@ -1,4 +1,4 @@
-export var data_D = {
+{
   "name": "流程D",
   "nodeList": [
     {
@@ -27,7 +27,8 @@ export var data_D = {
       "top": "351px",
       "ico": "el-icon-present",
       "state": "warning"
-    }, {
+    },
+    {
       "id": "nodeD",
       "name": "流程D-节点D",
       "type": "task",
@@ -37,27 +38,31 @@ export var data_D = {
       "state": "running"
     }
   ],
-  "lineList": [{
-    "from": "nodeA",
-    "to": "nodeB",
-    "label": "直线,自定义线样式,固定锚点",
-    "connector": "Straight",
-    "anchors": ["Top", "Bottom"],
-    "paintStyle": { "strokeWidth": 2, "stroke": "#1879FF" }
-  }, {
-    "from": "nodeA",
-    "to": "nodeC",
-    "label": "贝塞尔曲线,固定锚点",
-    "connector": "Bezier",
-    "anchors": ["Bottom", "Left"]
-  }, {
-    "from": "nodeB",
-    "to": "nodeD",
-    "label": "默认连线样式,动态锚点"
-  }, {
-    "from": "nodeC",
-    "to": "nodeD",
-    "label": "默认连线样式,动态锚点"
-  }
+  "lineList": [
+    {
+      "from": "nodeA",
+      "to": "nodeB",
+      "label": "直线,自定义线样式,固定锚点",
+      "connector": "Straight",
+      "anchors": ["Top", "Bottom"],
+      "paintStyle": { "strokeWidth": 2, "stroke": "#1879FF" }
+    },
+    {
+      "from": "nodeA",
+      "to": "nodeC",
+      "label": "贝塞尔曲线,固定锚点",
+      "connector": "Bezier",
+      "anchors": ["Bottom", "Left"]
+    },
+    {
+      "from": "nodeB",
+      "to": "nodeD",
+      "label": "默认连线样式,动态锚点"
+    },
+    {
+      "from": "nodeC",
+      "to": "nodeD",
+      "label": "默认连线样式,动态锚点"
+    }
   ]
 }

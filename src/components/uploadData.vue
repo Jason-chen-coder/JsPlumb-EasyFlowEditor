@@ -83,6 +83,7 @@ export default {
     confirmUpload () {
       // 触发父组件重绘函数
       this.$emit("uploadPaintFlow", this.currentNodeData)
+      this.$message.success("渲染成功")
       this.centerDialogVisible = false
       this.$parent.uploadDataVisible = false
     },
@@ -108,14 +109,14 @@ export default {
         let reader = new FileReader()
         reader.readAsText(file.raw) //注意读取中文的是用这个编码，不是utf-8
         reader.onload = () => {
-          this.$message.success("文件上传成功，开始解析文件")
+          this.$message.success("文件上传成功")
           var result = reader.result;
           // 获取文件类型
           var fileType = file.name.split(".").pop()
           if (fileType == 'yaml') {
             result = JSON.stringify(this.yamlToJson(result), null, "\t");
           }
-          setTimeout(() => { this.currentNodeData = result; this.$message.success("解析文件成功") }, 500)
+          this.currentNodeData = result
         }
       }
     },

@@ -1,4 +1,4 @@
-export var data_C = {
+{
   "name": "流程C",
   "nodeList": [
     {
@@ -7,8 +7,7 @@ export var data_C = {
       "type": "task",
       "left": "400px",
       "top": "15px",
-      "ico": "el-icon-user-solid",
-      "state": "warning"
+      "ico": "el-icon-user-solid"
     },
     {
       "id": "nodeB",
@@ -16,8 +15,7 @@ export var data_C = {
       "type": "task",
       "left": "400px",
       "top": "200px",
-      "ico": "el-icon-goods",
-      "state": "warning"
+      "ico": "el-icon-goods"
     },
     {
       "id": "nodeC",
@@ -25,18 +23,17 @@ export var data_C = {
       "type": "task",
       "left": "400px",
       "top": "378px",
-      "ico": "el-icon-present",
-      "state": "warning"
+      "ico": "el-icon-present"
     }
   ],
   "lineList": [
     {
       "from": "nodeA",
       "to": "nodeB"
-    }, {
+    },
+    {
       "from": "nodeB",
       "to": "nodeC"
     }
   ]
 }
-

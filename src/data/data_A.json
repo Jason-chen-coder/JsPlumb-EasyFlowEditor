@@ -7,7 +7,8 @@
       "type": "task",
       "left": "26px",
       "top": "161px",
-      "ico": "icon-daqilitiguancex iconfont"
+      "ico": "icon-daqilitiguancex iconfont",
+      "state": "warning"
     },
     {
       "id": "nodeB",
@@ -15,7 +16,8 @@
       "type": "task",
       "left": "340px",
       "top": "161px",
-      "ico": "icon-VE iconfont"
+      "ico": "icon-VE iconfont",
+      "state": "warning"
     },
     {
       "id": "nodeC",
@@ -23,7 +25,8 @@
       "type": "task",
       "left": "739px",
       "top": "161px",
-      "ico": "icon-litijiankong iconfont"
+      "ico": "icon-rongqi iconfont",
+      "state": "warning"
     }
   ],
   "lineList": [

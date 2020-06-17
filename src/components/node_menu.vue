@@ -1,15 +1,15 @@
 <template>
   <div class="flow-menu" ref="tool">
     <!-- <div v-for="menu  in  menuList" :key="menu.id">
-      <span class="ef-node-pmenu" @click="menu.open = !menu.open">
+      <span class="ee-node-pmenu" @click="menu.open = !menu.open">
         <i :class="{'el-icon-caret-bottom': menu.open,'el-icon-caret-right': !menu.open}"></i>
         &nbsp;{{menu.name}}
       </span>
-      <ul v-show="menu.open" class="ef-node-menu-ul">
+      <ul v-show="menu.open" class="ee-node-menu-ul">
         <draggable @end="end" @start="move" v-model="menu.children" :options="draggableOptions">
           <li
             v-for="subMenu in menu.children"
-            class="ef-node-menu-li"
+            class="ee-node-menu-li"
             :key="subMenu.id"
             :type="subMenu.type"
           >
