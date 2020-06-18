@@ -133,31 +133,31 @@
 
 自定义的节点列表数据写在node_menu.vue文件中的menuList变量中
 
-```json
+```js
  menuList: [
         {
-          id: '1',
-          type: 'group',
-          name: '接口节点',
-          ico: 'el-icon-video-play',
+          id: "1",
+          type: "group",
+          name: "接口节点",
+          ico: "el-icon-video-play",
           children: [
             {
-              id: '11',
+              id: "11",
               level: "1-1",
-              type: 'task1',
-              name: '数据接入',
-              ico: 'el-icon-time',
+              type: "task1",
+              name: "数据接入",
+              ico: "el-icon-time",
               state: "success",
               // 自定义覆盖样式
               style: {
-                'backgroundColor': 'red'
+                "backgroundColor": "red"
               }
             }, {
-              id: '12',
+              id: "12",
               level: "1-2",
-              type: 'task2',
-              name: '接口调用',
-              ico: 'el-icon-odometer',
+              type: "task2",
+              name: "接口调用",
+              ico: "el-icon-odometer",
               state: "success",
               // 自定义覆盖样式
               style: {}
@@ -165,33 +165,33 @@
           ]
         },
         {
-          id: '2',
-          type: 'group',
-          name: '工具节点',
-          ico: 'el-icon-video-pause',
+          id: "2",
+          type: "group",
+          name: "工具节点",
+          ico: "el-icon-video-pause",
           children: [
             {
-              id: '21',
+              id: "21",
               level: "2-1",
-              type: 'end',
-              name: '流程结束',
-              ico: 'el-icon-caret-right',
+              type: "end",
+              name: "流程结束",
+              ico: "el-icon-caret-right",
               state: "success",
               // 自定义覆盖样式
               style: {}
             }, {
-              id: '22',
+              id: "22",
               level: "2-2",
-              type: 'over',
-              name: '数据重置',
-              ico: 'el-icon-shopping-cart-full',
+              type: "over",
+              name: "数据重置",
+              ico: "el-icon-shopping-cart-full",
               state: "success",
               // 自定义覆盖样式
               style: {}
             }
           ]
         }
-      ],
+      ]
 ```
 
 ### menuList参数说明
