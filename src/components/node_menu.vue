@@ -83,7 +83,7 @@ export default {
           type: 'group',
           name: '接口节点',
           ico: 'el-icon-video-play',
-          open: true,
+          // open: true,
           // 注意type值要唯一!!!!
           children: [
             {
@@ -132,7 +132,7 @@ export default {
           type: 'group',
           name: '工具节点',
           ico: 'el-icon-video-pause',
-          open: true,
+          // open: true,
           children: [
             {
               id: '21',
@@ -225,7 +225,9 @@ export default {
     // 拖拽开始时触发
     move (evt) {
       var type = evt.item.attributes.type.nodeValue
+      // console.log(type)
       this.nodeMenu = this.getMenuByType(type)
+      console.log(this.nodeMenu)
     },
     // 拖拽结束时触发
     end (evt) {

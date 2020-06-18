@@ -35,7 +35,6 @@ export var data_A = {
     "to": "nodeB",
     "label": "条件AB",
     "connector": "Bezier",
-    "anchors": ["Top", "Bottom"],
     // "paintStyle": { "strokeWidth": 2, "stroke": "#1879FF" }
   }, {
     "from": "nodeB",

@@ -2,48 +2,6 @@
   padding: 0;
   margin: 0;
 }
-/*顶部工具栏*/
-.ee-tooltar {
-  padding-left: 60px;
-  box-sizing: border-box;
-  height: 45px;
-  line-height: 40px;
-  z-index: 3;
-  background-color: #fff;
-  border-bottom: 1px solid #dadce0;
-}
-/* 缩放工具 */
-.zoom-tool {
-  opacity: 0.3;
-  position: fixed;
-  left: 270px;
-  /* top: 74px; */
-  bottom: 60px;
-  z-index: 1;
-}
-.zoom-tool:hover {
-  opacity: 1;
-}
-
-.zoom-tool .enlarged-btn {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.shrink-btn {
-  position: absolute;
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.zoom-tool::before {
-  content: "";
-}
-.jtk-overlay {
-  cursor: pointer;
-  color: #4a4a4a;
-}
 
 /*节点菜单*/
 .ee-node-pmenu {

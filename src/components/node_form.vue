@@ -33,8 +33,8 @@
           <el-form-item label="条件">
             <el-input v-model="line.label"></el-input>
           </el-form-item>
-          <el-form-item label="连线样式">
-            <!-- 选择节点连接线样式 -->
+          <!-- 选择节点连接线样式 -->
+          <!-- <el-form-item label="连线样式">
             <el-select @change="selectLineStyle" v-model="line.type">
               <el-option
                 v-for="item in options"
@@ -43,7 +43,7 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item class="nodeFormButton">
             <el-button type="primary" icon="el-icon-check" class="saveLine" @click="saveLine">保存</el-button>
           </el-form-item>

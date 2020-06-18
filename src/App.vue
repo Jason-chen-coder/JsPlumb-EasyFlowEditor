@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <flow-panel></flow-panel>
+    <flow-editor></flow-editor>
   </div>
 </template>
 
 <script>
-import FlowPanel from '@/components/panel'
+import FlowEditor from '@/components/editor'
 
 export default {
   name: 'App',
   components: {
-    FlowPanel
+    FlowEditor
   }
 }
 </script>

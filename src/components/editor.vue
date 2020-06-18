@@ -4,16 +4,13 @@
       <!--顶部工具菜单-->
       <el-col :span="24">
         <div class="ee-tooltar">
-          <el-link type="primary" :underline="false">Easy Editor</el-link>
+          <el-link type="primary" :underline="false">
+            <h2>Easy Editor</h2>
+          </el-link>
           <span class="tooltar-center">
             <el-link type="primary" :underline="false">{{data.name}}</el-link>
             <el-divider direction="vertical"></el-divider>
-            <el-popover
-              placement="bottom"
-              @after-enter="saveAsImage"
-              style="text-align:center"
-              width="150"
-            >
+            <el-popover placement="bottom" style="text-align:center" width="150" trigger="hover">
               <div style="text-align:center">生成图片</div>
               <el-button
                 type="text"
@@ -25,7 +22,7 @@
             </el-popover>
             <el-divider direction="vertical"></el-divider>
             <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
-              <p style="text-align:center">删除节点</p>
+              <div style="text-align:center">删除节点</div>
               <el-button
                 type="text"
                 icon="el-icon-delete"
@@ -37,7 +34,7 @@
             </el-popover>
             <el-divider direction="vertical"></el-divider>
             <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
-              <p style="text-align:center">{{isShowGrid ? '隐藏网格线':'显示网格线'}}</p>
+              <div style="text-align:center">{{isShowGrid ? '隐藏网格线':'显示网格线'}}</div>
               <el-button
                 type="text"
                 :icon="(isShowGrid?'icon-dituleiwanggequ-copy ':'icon-fangxingweixuanzhong-copy ')+'iconfont'"
@@ -49,7 +46,7 @@
             </el-popover>
             <el-divider direction="vertical"></el-divider>
             <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
-              <p style="text-align:center">下载数据</p>
+              <div style="text-align:center">下载数据</div>
               <el-button
                 slot="reference"
                 type="text"
@@ -60,7 +57,7 @@
             </el-popover>
             <el-divider direction="vertical"></el-divider>
             <el-popover placement="bottom" style="text-align:center" trigger="hover" width="150">
-              <p style="text-align:center">上传数据</p>
+              <div style="text-align:center">上传数据</div>
               <el-button
                 slot="reference"
                 type="text"
@@ -153,7 +150,6 @@
 import { jsPlumb } from 'jsplumb'
 //  2.使用domtoimage 转换图片
 import domtoimage from 'dom-to-image';
-const url = require('@/assets/images/2.5D-1.jpg')
 import flowNode from '@/components/node'
 import nodeMenu from '@/components/node_menu'
 import FlowInfo from '@/components/info'
@@ -313,7 +309,6 @@ export default {
       imageLoadVisible: false,
       // 图片预览
       imgUrl: "../assets/images/2.5D-2.jpg",
-      preLogo: url,
       // 网格线显示控制 
       isShowGrid: true
     }
@@ -383,7 +378,7 @@ export default {
     this.$notify({
       title: '欢迎使用 Easy Editor',
       dangerouslyUseHTMLString: true,
-      message: "<p> 当前版本：1.0.0 <br /> Powered by Jason chen<br /> GitHhub:<a target='blank' href=''>  Easy Editor  </a> </p>",
+      message: "<p> 当前版本：1.0.0 <br /> Powered by Jason chen<br /> Gitee:<a target='blank' href='https://gitee.com/save_money/Easy-Editor'>  Easy Editor  </a> </p>",
       showClose: true,
       iconClass: "icon-workflow-copy iconfont",
       position: 'bottom-right',
@@ -699,7 +694,6 @@ export default {
         this.jsPlumb.makeTarget(nodeId, this.jsplumbTargetOptions)
         // 使当前节点可以被拖拽
         this.jsPlumb.draggable(nodeId)
-        console.log(this.data.nodeList)
       })
     },
     /**
@@ -840,6 +834,49 @@ export default {
 }
 </script>
 <style lang="less">
+/*顶部工具栏*/
+.ee-tooltar {
+  padding-left: 30px;
+  box-sizing: border-box;
+  height: 45px;
+  line-height: 40px;
+  z-index: 3;
+  background-color: #fff;
+  border-bottom: 1px solid #dadce0;
+}
+
+/* 缩放工具 */
+.zoom-tool {
+  opacity: 0.3;
+  position: fixed;
+  left: 270px;
+  /* top: 74px; */
+  bottom: 60px;
+  z-index: 1;
+  .enlarged-btn {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .shrink-btn {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+.zoom-tool:hover {
+  opacity: 1;
+}
+.zoom-tool::before {
+  content: "";
+}
+.jtk-overlay {
+  cursor: pointer;
+  color: #4a4a4a;
+}
+
 .node-form-active {
   transform: translateX(100%);
   /* width: 0 !important; */
