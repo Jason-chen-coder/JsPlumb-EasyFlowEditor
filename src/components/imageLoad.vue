@@ -31,7 +31,7 @@ export default {
   },
   mounted () {
     this.dialogVisible = true
-    setTimeout(() => { this.loading = false }, 1000)
+    setTimeout(() => { }, 1000)
   },
   data () {
     return {

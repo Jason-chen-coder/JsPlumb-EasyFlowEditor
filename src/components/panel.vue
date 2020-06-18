@@ -145,7 +145,7 @@
     <!-- 上传数据 -->
     <upload-data v-if="uploadDataVisible" @uploadPaintFlow="uploadPaintFlow"></upload-data>
     <!-- 一键生成图片 -->
-    <image-load v-if="imageLoadVisible" :imgUrl="imgUrl" :isShowGrid="isShowGrid"></image-load>
+    <image-load v-if="imageLoadVisible" :imgUrl="imgUrl" ref="imageLoad" :isShowGrid="isShowGrid"></image-load>
   </div>
 </template>
 
@@ -207,8 +207,6 @@ export default {
         DeleteEndpointsOnDetach: false,
         // 连线的两端端点类型：矩形 eight: 矩形的高 ，idth: 矩形的宽
         // Endpoint: ['Rectangle', {height: 20, width: 20, cssClass: 'ee-rectangle', hoverClass: 'ee-rectangle-hover'}],
-        //  图像端点
-        // Endpoint: ['Image', {src: 'https://www.easyicon.net/api/resizeApi.php?id=1181776&size=32', cssClass: 'ee-img', hoverClass: 'ee-img-hover'}],
         //  空白端点
         Endpoint: ['Blank', { Overlays: '' }],
         // Endpoints: [['Dot', {radius: 5, cssClass: 'ee-dot', hoverClass: 'ee-dot-hover'}], ['Rectangle', {height: 20, width: 20, cssClass: 'ee-rectangle', hoverClass: 'ee-rectangle-hover'}]],
@@ -233,14 +231,6 @@ export default {
             direction: 1, // 方向，默认值为1（表示向前），可选-1（表示向后）
             foldback: 0.623 // 折回，也就是尾翼的角度，默认0.623，当为1时，为正三角
           }],
-          // ['Diamond', {
-          //   events: {
-          //     dblclick: function (diamondOverlay, originalEvent) {
-          //       console.log(originalEvent)
-          //       console.log('double click on diamond overlay for : ' + diamondOverlay.component)
-          //     }
-          //   }
-          // }],
           ['Label', {
             label: '',
             location: 2.2,
@@ -347,8 +337,8 @@ export default {
         }
         el.onmousedown = (e) => {
           if (e.button == 2) {
-            // 右键不管
-            console.log("右键不管")
+            // 右键需求待完成
+            console.log("右键需求待完成")
             return
           }
           //  鼠标按下，计算鼠标在当前可视区的坐标
@@ -356,7 +346,6 @@ export default {
           let disY = e.clientY
           // 移除被选中节点的样式
           $(".ee-node-active").removeClass("ee-node-active")
-          console.log("click")
           el.style.cursor = 'move'
           document.onmousemove = function (e) {
             // 移动时禁止默认事件
@@ -390,34 +379,33 @@ export default {
       this.currentData = data_A
       this.dataReload(this.currentData)
     })
-
+    //  加载版本提示框
     this.$notify({
-      title: 'Easy Editor',
+      title: '欢迎使用 Easy Editor',
       dangerouslyUseHTMLString: true,
-      message: "<p> 当前版本：1.0.0<br /> Powered by Jason chen<br /> GitHhub:<a target='blank' href=''>Easy Editor</a> </p>",
+      message: "<p> 当前版本：1.0.0 <br /> Powered by Jason chen<br /> GitHhub:<a target='blank' href=''>  Easy Editor  </a> </p>",
       showClose: true,
       iconClass: "icon-workflow-copy iconfont",
       position: 'bottom-right',
       offset: 100,
       customClass: "notify-tip"
     });
-
   },
   methods: {
     saveAsImage () {
       // 将流程图保存为图片并将图片地址传递给子组件（使用dom2image）
       // var node = document.getElementById('center-container');
       var node = document.getElementById('eeContainer');
-      domtoimage.toSvg(node)
+      domtoimage.toPng(node)
         .then((dataUrl) => {
           this.imgUrl = dataUrl
+          this.$refs.imageLoad.loading = false
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
         });
-      setTimeout(() => {
-        this.imageLoadVisible = true;
-      }, 100)
+      this.imageLoadVisible = true;
+
     },
     //点击了某个节点
     showNodeDetail (node) {

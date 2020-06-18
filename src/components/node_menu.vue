@@ -1,5 +1,6 @@
 <template>
   <div class="flow-menu" ref="tool">
+    <!-- 使用原生html结构 -->
     <!-- <div v-for="menu  in  menuList" :key="menu.id">
       <span class="ee-node-pmenu" @click="menu.open = !menu.open">
         <i :class="{'el-icon-caret-bottom': menu.open,'el-icon-caret-right': !menu.open}"></i>
@@ -19,6 +20,7 @@
         </draggable>
       </ul>
     </div>-->
+    <!-- 使用element导航菜单 -->
     <el-menu
       class="el-menu-vertical-demo"
       @open="handleOpen"
@@ -145,7 +147,7 @@ export default {
               id: '22',
               level: "2-2",
               type: 'over',
-              name: '数据清理',
+              name: '数据重置',
               ico: 'el-icon-shopping-cart-full',
               state: "success",
               // 自定义覆盖样式
