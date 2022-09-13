@@ -10,7 +10,7 @@
 
 ## 效果图
 
-![home](.\src\assets\images\home.png)
+![https://gitee.com/save_money/Easy-Editor/raw/master/src/assets/images/home.png](https://gitee.com/save_money/Easy-Editor/raw/master/src/assets/images/home.png)
 
 ## 功能
 
